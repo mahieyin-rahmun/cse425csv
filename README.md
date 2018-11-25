@@ -5,7 +5,11 @@
 
 ##### Search Criteria set so far:
 **1. by cause**
+
 **2. by state**
+
 **3. by year**
+
 **4. death by year**
+
 **5. by number of deaths**
