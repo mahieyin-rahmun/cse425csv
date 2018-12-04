@@ -13,3 +13,5 @@
 **4. death by year**
 
 **5. by number of deaths**
+
+**6. a mixture of all five**
