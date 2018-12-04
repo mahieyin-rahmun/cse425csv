@@ -1,70 +1,89 @@
+# import necessary modules
 import argparse
-import os
 import csv
 
 def search_each_row(output, row, key, value):
-    if key == 'year':
-        if row[0] == value:
-            output.append(row)
-    elif key == 'cause':
-        if row[1].find(value) != -1 or row[1].find(value.lower()) != -1 or row[1].find(value.title()) != -1 or row[1].find(value.upper()) != -1 or row[2].find(value) != -1 or row[2].find(value.lower()) != -1 or row[2].find(value.title()) != -1 or row[2].find(value.upper()) != -1:
-            output.append(row)
-    elif key == 'state':
-        if row[3].find(value) != -1 or row[3].find(value.lower()) != -1 or row[3].find(value.title()) != -1 or row[3].find(value.upper()) != -1:
-            output.append(row)
-    elif key == 'deaths':
-        if int(row[4]) >= int(value):
-            output.append(row)
-    elif key == 'age_adjusted':
-        if int(row[5]) >= int(value):
-            output.append(row)
+	"""
+		This is a helper function that takes in the current row of the csv file, the current output list and the key and value pair.
+		Then, it matches the key and value pairs against the appropriate rows of the csv file. If a match is found, the output list is updated
+		and sent back to the caller.
 
-    return output
+		String checks are done in both titlecase (e.g. Title), uppercase (e.g. TITLE) and lowercase (e.g. title)
+	"""
+	if key == 'year':
+		if row[0] == value:
+			output.append(row)
+	elif key == 'cause':
+		if row[1].find(value) != -1 or row[1].find(value.lower()) != -1 or row[1].find(value.title()) != -1 or row[1].find(value.upper()) != -1 or row[2].find(value) != -1 or row[2].find(value.lower()) != -1 or row[2].find(value.title()) != -1 or row[2].find(value.upper()) != -1:
+			output.append(row)
+	elif key == 'state':
+		if row[3].find(value) != -1 or row[3].find(value.lower()) != -1 or row[3].find(value.title()) != -1 or row[3].find(value.upper()) != -1:
+			output.append(row)
+	elif key == 'deaths':
+		if int(row[4]) >= int(value):
+			output.append(row)
+	elif key == 'age_adjusted':
+		if int(row[5]) >= int(value):
+			output.append(row)
+
+	return output
 
 
 def find(file_search, searchable, key, value):
-    output = []
+	"""
+		Helper function that takes in a file or an iterable, depending on the number of search parameters specified. Depends on search_each_row().
+	"""
+	output = []
 
-    if file_search:
-        with open(searchable, 'r') as f:
-            f.readline()
-            csvreader = csv.reader(f, delimiter=',')
+	if file_search:
+		# if the searchable variable is a file path
+		with open(searchable, 'r') as f:
+			f.readline()
+			csvreader = csv.reader(f, delimiter=',')
 
-            for row in csvreader:
-                output = search_each_row(output, row, key, value)
+			for row in csvreader:
+				output = search_each_row(output, row, key, value)
 
-            return output
-    else:
-        for i in range(len(searchable)):
-            output = search_each_row(output, searchable[i], key, value)
+			return output
+	else:
+		# if the searchable variable is a list that already has some search results and we want to further search on that data
+		for i in range(len(searchable)):
+			output = search_each_row(output, searchable[i], key, value)
 
-        return output    
+		return output    
 
 
 
 def print_formatted(result_list):
-    length = len(result_list)
+	"""
+		Helper function that prints the query search results with appropriate padding and in a prettier manner.
+	"""
+	length = len(result_list)
 
-    if length > 0:
-        for i in range(length):
-            output = []
-            
-            for word in result_list[i]:
-                output.append('{:>25}'.format(word))
+	if length > 0:
+		for i in range(length):
+			output = []
+			
+			for word in result_list[i]:
+				output.append('{:<25}'.format(word))
 
-            print(''.join(output))
-    else:
-        print('No results to display for the given query.')
+			print('\t'.join(output))
+	else:
+		print('No results to display for the given query.')
 
 #=====================================================================================
 
 
 
 # set up the command line interface 
-parser = argparse.ArgumentParser(description='CSV File Search') # initialize parser
+
+# initialize parser
+parser = argparse.ArgumentParser(description='CSV File Search') 
+
+# mandatory argument: path to the csv file
 parser.add_argument('file', help='path to the CSV file')
 
-# introduce a mutually inclusive group of commands that can be used individually only
+# introduce a mutually inclusive group of commands that can be used individually or in a combination
 parser.add_argument('-y', '--year', help='search by year')
 parser.add_argument('-c', '--cause', help='search by cause')
 parser.add_argument('-s', '--state', help='search by state')
@@ -80,14 +99,19 @@ result = None
 
 # iterate through the dictionary
 for key, value in dict_args.items():
-    if key == 'file':
-        continue
-    elif value is None:
-        continue
-    else:
-        if result is None:
-            result = find(True, dict_args['file'], key, value)
-        else:
-            result = find(False, result, key, value)
+	# skip the file value, that is not a search parameter
+	if key == 'file':
+		continue
+	elif value is None:
+	# skip any key value pairs that are none, user hasn't wanted to search using those values
+		continue
+	else:
+		if result is None:
+			# if this is the first search result, store the results in the variable
+			result = find(True, dict_args['file'], key, value)
+		else:
+			# this fires if there were more than one search paramters (e.g. year AND deaths, year, deaths AND state etc)
+			result = find(False, result, key, value)
 
+# print the results
 print_formatted(result)
