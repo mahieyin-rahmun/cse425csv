@@ -20,10 +20,10 @@ def search_each_row(output, row, key, value):
 		if row[3].find(value) != -1 or row[3].find(value.lower()) != -1 or row[3].find(value.title()) != -1 or row[3].find(value.upper()) != -1:
 			output.append(row)
 	elif key == 'deaths':
-		if int(row[4]) >= int(value):
+		if float(row[4]) >= float(value):
 			output.append(row)
 	elif key == 'age_adjusted':
-		if int(row[5]) >= int(value):
+		if float(row[5]) >= float(value):
 			output.append(row)
 
 	return output
