@@ -58,6 +58,9 @@ def print_formatted(result_list):
 	"""
 		Helper function that prints the query search results with appropriate padding and in a prettier manner.
 	"""
+	if result_list is None:
+		return print('No search parameters were passed!')
+	
 	length = len(result_list)
 
 	if length > 0:
