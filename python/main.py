@@ -68,7 +68,7 @@ def print_formatted(result_list):
 			output = []
 			
 			for word in result_list[i]:
-				output.append('{:<25}'.format(word))
+				output.append('{:<10}'.format(word))
 
 			print('\t'.join(output))
 	else:
