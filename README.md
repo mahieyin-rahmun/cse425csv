@@ -23,7 +23,7 @@
 ##### **$ g++ main.cpp -o output file name -lboost_program_options**
 
 ###### All of the implementations can be run using this command structure:
-##### **Python: $ python3 main.py "path to the csv file" -"name of argument"="value of argument"
-##### **Shell: $ main.sh "path to the csv file" -"name of argument"="value of argument"
-##### **C++: After building the binary file - $ ".o file" --"name of argument"="value of argument"
+##### **Python: $ python3 main.py "path to the csv file" -"name of argument"="value of argument"**
+##### **Shell: $ main.sh "path to the csv file" -"name of argument"="value of argument"**
+##### **C++: After building the binary file - $ ".o file" --"name of argument"="value of argument"**
 
