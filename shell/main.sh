@@ -73,6 +73,12 @@ RESULT=$(awk -F "\"*,\"*" \
     -vAGE_ADJUSTED=$AGE_ADJUSTED \
     -vCOUNT=$COUNT \
 '{
+    if (length(YEAR) != 0) {
+        if ($1 != YEAR) {
+            next;
+        }
+    }
+
     if (length(DEATHS) != 0 && length(AGE_ADJUSTED) != 0) {
         if ($5 < DEATHS || $6 < AGE_ADJUSTED) {
             next;
@@ -101,4 +107,4 @@ RESULT=$(awk -F "\"*,\"*" \
 # Name of the State etc.
 # This can be accomplished by grep on the RESULT variable that contains the initial search data
 
-echo $RESULT | grep "$YEAR" | grep "$CAUSE" | grep "$STATE"
+echo $RESULT | grep "$CAUSE" | grep "$STATE"
