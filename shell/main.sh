@@ -61,8 +61,7 @@ IFS=
 # if the next; command did not get fired inside the if blocks, it means that this row of the csv file matches user criteria
 # therefore, we store it in the variable RESULT
 
-# $1 on line 94 is the path to the CSV file, this is a bash variable
-COUNT=0
+# $1 on line 98 is the path to the CSV file, this is a bash variable
 
 RESULT=$(awk -F "\"*,\"*" \
     -vFS=, -vOFS=, \
@@ -71,7 +70,6 @@ RESULT=$(awk -F "\"*,\"*" \
     -vSTATE=$STATE \
     -vDEATHS=$DEATHS \
     -vAGE_ADJUSTED=$AGE_ADJUSTED \
-    -vCOUNT=$COUNT \
 '{
     if (length(YEAR) != 0) {
         if ($1 != YEAR) {
@@ -102,7 +100,6 @@ RESULT=$(awk -F "\"*,\"*" \
 
 # we got our numerically specific data (if the user passed -d or -ad arguments). 
 # Now we need to further sort out the data with any additional string arguments that the user may have passed.
-# Such as, YEAR (even though it is a number, it can be considered a String in this case)
 # Cause of Death
 # Name of the State etc.
 # This can be accomplished by grep on the RESULT variable that contains the initial search data
