@@ -1,6 +1,7 @@
 # import necessary modules
 import argparse
 import csv
+from time import time
 
 def search_each_row(output, row, key, value):
 	"""
@@ -100,6 +101,8 @@ dict_args = vars(args)
 
 result = None
 
+start = time()
+
 # iterate through the dictionary
 for key, value in dict_args.items():
 	# skip the file value, that is not a search parameter
@@ -116,5 +119,9 @@ for key, value in dict_args.items():
 			# this fires if there were more than one search paramters (e.g. year AND deaths, year, deaths AND state etc)
 			result = find(False, result, key, value)
 
+end = time()
+
 # print the results
 print_formatted(result)
+
+print(end-start)

@@ -5,6 +5,7 @@
 #include <boost/program_options.hpp>
 #include <boost/tokenizer.hpp>
 #include <sstream>
+#include <chrono>
 
 using namespace boost;
 
@@ -248,7 +249,7 @@ int main(int argc, const char* argv[]) {
 	std::map<std::string, std::string> my_map = get_arguments(vm);
 
 	std::vector<std::vector<std::string>> results;
-
+	auto start = std::chrono::system_clock::now();
 	// iterate over the arguments list
 	if (my_map.size() > 0) {
 		for(auto i = my_map.begin(); i != my_map.end(); i++) {
@@ -266,6 +267,8 @@ int main(int argc, const char* argv[]) {
 			}
 		}
 	}
+	auto end = std::chrono::system_clock::now();
+	auto elapsed = end - start;
 
 	// iterate over final results vector and print out the results
 	for (auto i = results.begin(); i != results.end(); i++) {
@@ -273,4 +276,6 @@ int main(int argc, const char* argv[]) {
 
 		std::cout << temp_vector[0] << " " << temp_vector[1] << " " << temp_vector[2] << " " << temp_vector[3] << " " << temp_vector[4] << " " << temp_vector[5] << std::endl;
 	}
+
+	std::cout << elapsed.count() << std::endl;
 }
